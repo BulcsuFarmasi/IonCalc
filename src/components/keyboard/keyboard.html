@@ -1,2 +1,2 @@
-<button *ngFor="let key of keys" [innerHTML]="key"></button>
-<button>Törlés</button>
+<button *ngFor="let key of keys" [innerHTML]="key" (click)="keyClicked(key)"></button>
+<button (click)="keyClicked('Törlés')">Törlés</button>

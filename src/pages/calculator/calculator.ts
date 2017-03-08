@@ -3,9 +3,12 @@
  */
 import { Component } from '@angular/core';
 
+import { DisplayService } from '../../services/display/display'
+
 @Component({
     selector:'page-calculator',
-    templateUrl:'calculator.html'
+    templateUrl:'calculator.html',
+    providers:[DisplayService]
 })
 
 export class CalculatorPage{}

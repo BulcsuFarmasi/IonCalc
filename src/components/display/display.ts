@@ -3,9 +3,13 @@
  */
 import { Component } from '@angular/core';
 
+import { DisplayService } from '../../services/display/display'
+
 @Component({
     selector:'display',
     templateUrl:'display.html'
 })
 
-export class DisplayComponent{}
+export class DisplayComponent{
+    constructor(private displayService:DisplayService){};
+}
