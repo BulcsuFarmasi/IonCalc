@@ -1,0 +1,26 @@
+keyboard{
+  display: flex;
+  flex-wrap:wrap;
+  height:70%;
+  button{
+    width:25%;
+    height:20%;
+    font-size:40px;
+    font-weight: lighter;
+    background-color:map-get($colors,'very-light');
+    border:{
+      top:1px solid map-get($colors,'dark');
+      right:1px solid map-get($colors,'dark')
+    }
+    &:last-child{
+      width:100%;
+      border-right:none
+    }
+    &:hover{
+        background-color:map-get($colors,'light');
+    }
+    &:nth-child(4n){
+        border-right:none;
+    }
+  }
+}

@@ -1,8 +1,12 @@
-display input{
-  width:100%;
-  height:20%;
-  border:none;
-  border-bottom:2px solid map-get($colors,'dark');
-  font-size:60px;
-  padding:20px;
+display {
+  width: 100%;
+  height: 30%;
+  input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid map-get($colors, 'dark');
+    font-size: 60px;
+    padding: 20px;
+    text-align: right;
+  }
 }
