@@ -1,10 +1,10 @@
 keyboard{
   display: flex;
   flex-wrap:wrap;
-  height:70vh;
+  height:80%;
   button{
     width:25%;
-    height:20%;
+    height:16.66%;
     font-size:40px;
     font-weight: lighter;
     background-color:map-get($colors,'very-light');
@@ -14,7 +14,8 @@ keyboard{
     }
     &:last-child{
       width:100%;
-      border-right:none
+      border-right:none;
+      display:block;
     }
     &:hover{
         background-color:map-get($colors,'light');

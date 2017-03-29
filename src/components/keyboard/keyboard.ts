@@ -11,19 +11,16 @@ import { DisplayService } from '../../services/display/display';
 })
 
 export class KeyboardComponent{
-    private keys:string[];
+    private keys:{value:string,label:string}[];
     constructor(private displayService:DisplayService){
-        this.keys=['x<sup>y</sup>','()','√','/',
-                   '7','8','9','*',
-                    '4','5','6','-',
-                    '1','2','3','+',
-                    '.','0','+/-','='];
+        this.keys=[{value:'^',label:'x<sup>y</sup>'},{value:'()',label:'()'},{value:'√',label:'√'},{value:'/',label:'/'},
+                   {value:'7',label:'7'},{value:'8',label:'8'},{value:'9',label:'9'},{value:'*',label:'*'},
+                   {value:'4',label:'4'},{value:'5',label:'5'},{value:'6',label:'6'},{value:'-',label:'-'},
+                   {value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'+',label:'+'},
+                   {value:'.',label:'.'},{value:'0',label:'0'},{value:'+/-',label:'+/-'},{value:'=',label:'='}
+                   ]
     }
-    keyClicked(key){
-        if(key != "="){
-            this.displayService.addDisplayContent(key);
-        }else if(key == "Törlés"){
-            this.displayService.clearDisplayContent();
-        }
+    keyTouched(key){
+        this.displayService.filterNewChar(key);
     }
 }
