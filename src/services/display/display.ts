@@ -3,19 +3,19 @@ import { Injectable } from '@angular/core';
 @Injectable()
 
 export class DisplayService{
-    private displayContent:string="";
+    private displayContent:string='';
     private operators:string[];
 
     constructor(){
-        this.operators=["+","-","*","/","^","√"];
+        this.operators=['+','-','*','/','^','√'];
     }
 
     addParenthesis(){
         let lastChar = this.displayContent.charAt(this.displayContent.length-1);
         let addable = '';
-        if (this.isOperator(lastChar) || lastChar == '(') {
+        if (this.isOperator(lastChar) || lastChar === '(') {
             addable = '(';
-        } else if (this.isNumber(lastChar) || lastChar == ')'){
+        } else if (this.isNumber(lastChar) || lastChar === ')'){
             addable = ')';
         }
         this.displayContent += addable;
@@ -33,6 +33,12 @@ export class DisplayService{
         this.displayContent='';
     }
 
+    deleteChar(index:number){
+        let charArray = this.displayContent.split('');
+        charArray.splice(index, 1);
+        this.displayContent = charArray.join('');
+    }
+
     filterNewChar(char){
         switch(char) {
             case 'C':
@@ -48,6 +54,12 @@ export class DisplayService{
         }
     }
 
+    insertChar(index:number,char:string){
+        let charArray=this.displayContent.split('');
+        charArray.splice(index, 0, char);
+        this.displayContent=charArray.join('');
+    }
+
     isOperator(char:string) {
         return this.operators.indexOf(char) > -1;
     }
@@ -57,15 +69,24 @@ export class DisplayService{
     }
 
     isParenthesis(char) {
-        let parentheses = ["(", ")"];
+        let parentheses = ['(', ')'];
         return parentheses.indexOf(char) > -1;
     }
 
     negateLastNumber() {
-        for (let i = this.displayContent.length - 1; i >= 0; i++) {
-            if (this.isNumber(this.displayContent.charAt(i)) ) {
-                
+        var lastChar = this.displayContent.length - 1;
+        if (this.isNumber(this.displayContent.charAt(lastChar))){
+            var i = lastChar;
+            while (i > 0 && !this.isOperator(this.displayContent.charAt(i)) &&
+            !this.isOperator(this.displayContent.charAt(i - 1))) {
+                i--;
+            }
+            if (this.displayContent.charAt(i - 1) === '-' && this.isOperator(this.displayContent.charAt(i - 2))){
+                this.deleteChar(i - 1);
+            } else {
+                this.insertChar(i, '-');
             }
         }
+
     }
 }
