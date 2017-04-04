@@ -22,7 +22,14 @@ export class DisplayService{
     }
 
     addDisplayContent(item) {
-        this.displayContent += item
+        if (this.isOperator(item)) {
+            if (this.filterOperator(item)){
+                console.log(item);
+                this.displayContent += item;
+            }
+        } else {
+            this.displayContent += item;
+        }
     }
 
     getDisplayContent(){
@@ -52,6 +59,30 @@ export class DisplayService{
             default:
                 this.addDisplayContent(char);break;
         }
+    }
+
+    filterOperator (operator):boolean {
+        let lastCharNumber:number = this.displayContent.length - 1;
+        let lastChar:string = this.displayContent.charAt(lastCharNumber);
+        let notRoot:boolean = operator !== '√';
+        let root:boolean = operator === '√';
+
+        var applicable:boolean = true;
+
+        // root can't stand after number
+        if (!this.isOperator(lastChar) && root && lastCharNumber >= 0) {
+            applicable = false;
+        // operator except root can't be first
+        } else if (notRoot && lastCharNumber < 0){
+            applicable = false;
+        // operator which isn't root can't stand after root
+        } else if (lastChar === '√' && notRoot) {
+            applicable = false;
+        // operator can't stand after operator both aren't roots, deleting the first
+        } else if (this.isOperator(lastChar) && notRoot) {
+            this.deleteChar(lastCharNumber);
+        }
+        return applicable;
     }
 
     insertChar(index:number,char:string){
@@ -87,6 +118,5 @@ export class DisplayService{
                 this.insertChar(i, '-');
             }
         }
-
     }
 }
