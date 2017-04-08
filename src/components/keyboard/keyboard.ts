@@ -1,25 +1,26 @@
 /**
  * Created by Dell on 2017. 03. 08..
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DisplayService } from '../../services/display/display';
+import { KeyboardService } from '../../services/keyboard/keyboard';
+import { Key } from '../../services/keyboard/key'
 
 @Component({
     selector:'keyboard',
     templateUrl:'keyboard.html'
 })
 
-export class KeyboardComponent{
-    private keys:{value:string,label:string}[];
-    constructor(private displayService:DisplayService){
-        this.keys=[{value:'^',label:'x<sup>y</sup>'},{value:'()',label:'()'},{value:'√',label:'√'},{value:'/',label:'/'},
-                   {value:'7',label:'7'},{value:'8',label:'8'},{value:'9',label:'9'},{value:'*',label:'*'},
-                   {value:'4',label:'4'},{value:'5',label:'5'},{value:'6',label:'6'},{value:'-',label:'-'},
-                   {value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'+',label:'+'},
-                   {value:'.',label:'.'},{value:'0',label:'0'},{value:'+/-',label:'+/-'},{value:'=',label:'='}
-                   ]
+export class KeyboardComponent implements OnInit{
+    private keys:Key[];
+    constructor(private displayService:DisplayService, private keyboardService:KeyboardService){}
+
+    ngOnInit () {
+        this.keyboardService.getKeys()
+            .subscribe(keys => {this.keys = keys});
     }
+
     keyTouched(key){
         this.displayService.filterNewChar(key);
     }

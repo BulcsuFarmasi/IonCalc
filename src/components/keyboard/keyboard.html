@@ -1,2 +1,2 @@
-<button *ngFor="let key of keys" [innerHTML]="key.label" (click)="keyTouched(key.value)"></button>
+<button *ngFor="let key of keys" [id]="key.id" [innerHTML]="key.label" (click)="keyTouched(key.value)"></button>
 <button (click)="keyTouched('C')">Törlés</button>
