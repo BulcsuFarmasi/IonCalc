@@ -11,7 +11,7 @@ export class DisplayService{
     }
 
     addParenthesis(){
-        let lastChar = this.displayContent.charAt(this.displayContent.length-1);
+        let lastChar = this.displayContent.charAt(this.displayContent.length - 1);
         let addable = '';
         if (this.isOperator(lastChar) || lastChar === '(') {
             addable = '(';
