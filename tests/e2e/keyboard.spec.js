@@ -1,14 +1,14 @@
 describe('After clicking on the keyboard\'s buttons', () => {
     var display, n1, point, plus, root, parenthasis;
     beforeEach(() => {
-       browser.get('.');
-       display = element(by.css('display p'));
-       n1 = element(by.id('n-1'));
-       point = element(by.id('n-p'));
-       plus = element(by.id('o-a'));
-       minus = element(by.id('o-s'));
-       root = element(by.id('o-r'));
-       parenthasis = element(by.id('o-pa'));
+        browser.get('.');
+        display = element(by.css('display p'));
+        n1 = element(by.id('n-1'));
+        point = element(by.id('n-p'));
+        plus = element(by.id('o-a'));
+        minus = element(by.id('o-s'));
+        root = element(by.id('o-r'));
+        parenthasis = element(by.id('o-pa'));
     });
 
     describe('number',() => {
@@ -21,7 +21,7 @@ describe('After clicking on the keyboard\'s buttons', () => {
         })
 
         it('should followwed by operator ', () => {
-            n1.click();
+            n1.click()
             plus.click();
             n1.click();
 
@@ -112,7 +112,6 @@ describe('After clicking on the keyboard\'s buttons', () => {
             plus.click()
             n1.click();
             parenthasis.click();
-
             expect(display.getText()).toEqual('1+(1+1)');
         })
 

@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+import { CharService } from '../char/char'
 
+import { TokenizerService } from '../tokenizer/tokenizer';
+import { Token } from '../tokenizer/token';
+
+@Injectable()
 export class DisplayService{
     private displayContent:string='';
-    private operators:string[];
 
-    constructor(){
-        this.operators=['+','-','*','/','^','√'];
-    }
+    constructor(private tokenizerService:TokenizerService, private charService:CharService){}
 
     addParenthesis(){
         let lastChar = this.displayContent.charAt(this.displayContent.length - 1);
         let addable = '';
-        if (this.isOperator(lastChar) || lastChar === '(') {
+        if (this.charService.isOperator(lastChar) || lastChar === '(') {
             addable = '(';
-        } else if (this.isNumber(lastChar) || lastChar === ')'){
+        } else if (this.charService.isNumber(lastChar) || lastChar === ')'){
             addable = ')';
         }
         this.displayContent += addable;
     }
 
     addDisplayContent(item) {
-        if (this.isOperator(item)) {
+        if (this.charService.isOperator(item)) {
             if (this.filterOperator(item)){
                 console.log(item);
                 this.displayContent += item;
@@ -36,8 +37,14 @@ export class DisplayService{
         return this.displayContent
     }
 
-    clearDisplayContent(){
-        this.displayContent='';
+    calculateResult () {
+        let chars:string[] = this.displayContent.split('');
+        let tokens:Token[] = this.tokenizerService.getTokens(chars);
+        console.log(tokens);
+    }
+
+    clearDisplayContent() {
+        this.displayContent = '';
     }
 
     deleteChar(index:number){
@@ -51,7 +58,7 @@ export class DisplayService{
             case 'C':
                 this.clearDisplayContent();break;
             case '=':
-                break;
+                this.calculateResult();break;
             case '+/-':
                 this.negateLastNumber();break;
             case '()':
@@ -70,7 +77,7 @@ export class DisplayService{
         var applicable:boolean = true;
 
         // root can't stand after number
-        if (!this.isOperator(lastChar) && root && lastCharNumber >= 0) {
+        if (!this.charService.isOperator(lastChar) && root && lastCharNumber >= 0) {
             applicable = false;
         // operator except root can't be first
         } else if (notRoot && lastCharNumber < 0){
@@ -79,7 +86,7 @@ export class DisplayService{
         } else if (lastChar === '√' && notRoot) {
             applicable = false;
         // operator can't stand after operator both aren't roots, deleting the first
-        } else if (this.isOperator(lastChar) && notRoot) {
+        } else if (this.charService.isOperator(lastChar) && notRoot) {
             this.deleteChar(lastCharNumber);
         }
         return applicable;
@@ -91,28 +98,15 @@ export class DisplayService{
         this.displayContent=charArray.join('');
     }
 
-    isOperator(char:string) {
-        return this.operators.indexOf(char) > -1;
-    }
-
-    isNumber(char:string) {
-        return !isNaN(parseInt(char));
-    }
-
-    isParenthesis(char) {
-        let parentheses = ['(', ')'];
-        return parentheses.indexOf(char) > -1;
-    }
-
     negateLastNumber() {
         var lastChar = this.displayContent.length - 1;
-        if (this.isNumber(this.displayContent.charAt(lastChar))){
+        if (this.charService.isNumber(this.displayContent.charAt(lastChar))){
             var i = lastChar;
-            while (i > 0 && !this.isOperator(this.displayContent.charAt(i)) &&
-            !this.isOperator(this.displayContent.charAt(i - 1))) {
+            while (i > 0 && !this.charService.isOperator(this.displayContent.charAt(i)) &&
+            !this.charService.isOperator(this.displayContent.charAt(i - 1))) {
                 i--;
             }
-            if (this.displayContent.charAt(i - 1) === '-' && this.isOperator(this.displayContent.charAt(i - 2))){
+            if (this.displayContent.charAt(i - 1) === '-' && this.charService.isOperator(this.displayContent.charAt(i - 2))){
                 this.deleteChar(i - 1);
             } else {
                 this.insertChar(i, '-');
