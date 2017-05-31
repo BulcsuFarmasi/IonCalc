@@ -9,14 +9,15 @@ export class TokenizerService {
     constructor(private charService:CharService){}
 
     addNumber (number:string) {
-        let tokensLength = this.tokens.length;
+        let tokensLength = this.tokens.length
         if (tokensLength > 0 && this.tokens[tokensLength - 1].type == 'number') {
             this.tokens[tokensLength - 1].value += number;
         } else {
             let token = new Token();
             token.type = 'number';
             token.value = number;
-            this.tokens.push(token);
+            tokensLength=this.tokens.push(token);
+            this.createNegative(tokensLength);
         }
     }
 
@@ -32,6 +33,15 @@ export class TokenizerService {
         token.type = 'parenthesis';
         token.value = parenthesis;
         this.tokens.push(token);
+    }
+
+    createNegative(tokensLength:number) {
+        if (tokensLength > 2 && this.tokens[tokensLength - 3].type == 'operator'
+            && this.tokens[tokensLength - 2].type == 'operator') {
+            this.tokens[tokensLength -1 ].value = this.tokens[tokensLength - 2].value
+                                                + this.tokens[tokensLength - 1].value;
+            this.tokens.splice(tokensLength - 2, 1);
+        }
     }
 
     getTokens (chars:string[]) {
