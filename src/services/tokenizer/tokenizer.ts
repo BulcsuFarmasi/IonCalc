@@ -9,7 +9,7 @@ export class TokenizerService {
     constructor(private charService:CharService){}
 
     addNumber (number:string) {
-        let tokensLength = this.tokens.length
+        let tokensLength = this.tokens.length;
         if (tokensLength > 0 && this.tokens[tokensLength - 1].type == 'number') {
             this.tokens[tokensLength - 1].value += number;
         } else {
