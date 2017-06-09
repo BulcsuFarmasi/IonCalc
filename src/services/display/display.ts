@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CharService } from '../char/char'
-
+import { CalculatorService } from '../calculator/calculator'
 import { TokenizerService } from '../tokenizer/tokenizer';
 import { Token } from '../tokenizer/token';
 
@@ -9,7 +9,8 @@ import { Token } from '../tokenizer/token';
 export class DisplayService{
     private displayContent:string='';
 
-    constructor(private tokenizerService:TokenizerService, private charService:CharService){}
+    constructor(private tokenizerService:TokenizerService, private charService:CharService,
+                private calculatorService:CalculatorService){}
 
     addParenthesis(){
         let lastChar = this.displayContent.charAt(this.displayContent.length - 1);
@@ -40,7 +41,7 @@ export class DisplayService{
     calculateResult () {
         let chars:string[] = this.displayContent.split('');
         let tokens:Token[] = this.tokenizerService.getTokens(chars);
-        console.log(tokens);
+        this.displayContent = this.calculatorService.calculateResult(tokens).toString();
     }
 
     clearDisplayContent() {

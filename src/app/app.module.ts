@@ -7,6 +7,7 @@ import { CalculatorPage } from '../pages/calculator/calculator';
 import { DisplayComponent } from '../components/display/display'
 import { KeyboardComponent } from '../components/keyboard/keyboard';
 
+import { CalculatorService } from '../services/calculator/calculator';
 import { CharService } from '../services/char/char';
 import { DisplayService } from '../services/display/display';
 import { KeyboardService } from '../services/keyboard/keyboard';
@@ -30,6 +31,6 @@ import './rxjs';
     CalculatorPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-    DisplayService, KeyboardService, TokenizerService, CharService]
+    DisplayService, KeyboardService, TokenizerService, CharService, CalculatorService]
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Token } from "../tokenizer/token";
+import { ParentthesisNotFound } from './parenthesis-not-found'
 
 @Injectable()
 export class CalculatorService {
@@ -21,23 +22,141 @@ export class CalculatorService {
             let partLength = this.subtract(parenthesisLocations[1], parenthesisLocations[0]);
             tokens.splice(parenthesisLocations[0], partLength, partToken);
         } catch (exception) {
-
+            if (exception.type == 'noClosing') {
+                tokens.splice(exception.position, 1);
+            }
         }
 
+        tokens = this.findPowers(tokens);
+        tokens = this.findMultiplies(tokens);
+        tokens = this.findAdds(tokens);
 
 
-
-
-        return '';
+        return tokens[0].value;
     }
 
     divide (operand1:number, operand2:number) {
         return operand1 / operand2
     }
 
-    findParentheses (tokens:Token[]) {
+    findAdds(tokens) {
+        console.log(tokens);
+        var position = 0;
+        do {
+            position = tokens.findIndex((token) => {
+                if (token.type == 'operator' && (token.value == '+' || token.value == '-')){
+                    return true
+                }
+            })
 
+            if (position > -1) {
+
+                if (tokens[position].value == '+') {
+                    let result = this.add(parseFloat(tokens[position - 1].value),
+                        parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position - 1, 2);
+                } else {
+                    let result = this.subtract(parseFloat(tokens[position - 1].value),
+                        parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position - 1, 2);
+                }
+            }
+            console.log(position >= -1);
+        } while (position > -1);
+
+        console.log(tokens);
+
+        return tokens;
     }
+
+    findMultiplies (tokens) {
+        console.log(tokens);
+        var position = 0;
+        do {
+            position = tokens.findIndex((token) => {
+                if (token.type == 'operator' && (token.value == '*' || token.value == '/')){
+                    return true
+                }
+            })
+
+            if (position > -1) {
+                if (tokens[position].value == '*') {
+                    let result = this.multiply(parseFloat(tokens[position - 1].value),
+                        parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position - 1, 2);
+                } else {
+                    let result = this.divide(parseFloat(tokens[position - 1].value),
+                        parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position - 1, 2);
+                }
+            }
+        } while (position > -1);
+
+        return tokens;
+    }
+
+    findPowers (tokens) {
+        console.log(tokens);
+        var position = 0;
+        do {
+            position = tokens.findIndex((token) => {
+                if (token.type == 'operator' && (token.value == '^' || token.value == '√')){
+                    return true
+                }
+            })
+            console.log(position);
+
+            if (position > -1) {
+                if (tokens[position].value == '^') {
+                    let result = this.power(parseFloat(tokens[position - 1].value),
+                        parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position - 1, 2);
+                } else {
+                    let result = this.squareRoot(parseFloat(tokens[position + 1].value));
+                    tokens[position + 1].value = result;
+                    tokens.splice(position, 1);
+                }
+            }
+        } while (position > -1);
+
+        return tokens;
+    }
+
+    findParentheses (tokens:Token[]) {
+        let opening = tokens.findIndex(token => {
+            if (token.type == 'parenthesis' && token.value == '(') {
+                return true;
+            }
+        })
+
+        if (opening == -1){
+            let exception = new ParentthesisNotFound();
+            exception.type = 'noOpening';
+            throw exception;
+        }
+
+        tokens=tokens.reverse();
+        let closing = tokens.findIndex(token => {
+            if (token.type == 'parenthesis' && token.value == '(') {
+                return true;
+            }
+        })
+
+        if (closing == -1) {
+            let exception = new ParentthesisNotFound();
+            exception.type = 'noClosing';
+            exception.position = opening;
+            throw exception;
+        }
+
+        return [opening, closing]
+    }
+
 
     multiply (operand1:number, operand2:number) {
         return operand1 * operand2
