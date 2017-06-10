@@ -37,7 +37,8 @@ export class TokenizerService {
 
     createNegative(tokensLength:number) {
         if (tokensLength > 2 && this.tokens[tokensLength - 3].type == 'operator'
-            && this.tokens[tokensLength - 2].type == 'operator') {
+            && this.tokens[tokensLength - 2].type == 'operator'
+            && this.tokens[tokensLength - 2].value == '-') {
             this.tokens[tokensLength -1 ].value = this.tokens[tokensLength - 2].value
                                                 + this.tokens[tokensLength - 1].value;
             this.tokens.splice(tokensLength - 2, 1);

@@ -27,6 +27,8 @@ export class CalculatorService {
             }
         }
 
+        tokens = this.findSquareRoots(tokens);
+        console.log(tokens);
         tokens = this.findPowers(tokens);
         tokens = this.findMultiplies(tokens);
         tokens = this.findAdds(tokens);
@@ -40,7 +42,6 @@ export class CalculatorService {
     }
 
     findAdds(tokens) {
-        console.log(tokens);
         var position = 0;
         do {
             position = tokens.findIndex((token) => {
@@ -63,16 +64,12 @@ export class CalculatorService {
                     tokens.splice(position - 1, 2);
                 }
             }
-            console.log(position >= -1);
         } while (position > -1);
-
-        console.log(tokens);
 
         return tokens;
     }
 
     findMultiplies (tokens) {
-        console.log(tokens);
         var position = 0;
         do {
             position = tokens.findIndex((token) => {
@@ -100,27 +97,42 @@ export class CalculatorService {
     }
 
     findPowers (tokens) {
-        console.log(tokens);
         var position = 0;
         do {
             position = tokens.findIndex((token) => {
-                if (token.type == 'operator' && (token.value == '^' || token.value == '√')){
+                if (token.type == 'operator' && token.value == '^') {
                     return true
                 }
             })
-            console.log(position);
 
             if (position > -1) {
-                if (tokens[position].value == '^') {
-                    let result = this.power(parseFloat(tokens[position - 1].value),
-                        parseFloat(tokens[position + 1].value));
-                    tokens[position + 1].value = result;
-                    tokens.splice(position - 1, 2);
-                } else {
-                    let result = this.squareRoot(parseFloat(tokens[position + 1].value));
-                    tokens[position + 1].value = result;
-                    tokens.splice(position, 1);
+                let result = this.power(parseFloat(tokens[position - 1].value),
+                    parseFloat(tokens[position + 1].value));
+                tokens[position + 1].value = result;
+                tokens.splice(position - 1, 2);
+            }
+        } while (position > -1);
+
+            return tokens;
+    }
+
+    findSquareRoots (tokens) {
+        console.log(tokens);
+        var position = 0;
+        do {
+
+            position = tokens.findIndex((token) => {
+                console.log(token.type == 'operator' && token.value == '√', token);
+                if (token.type == 'operator' && token.value == '√'){
+                    return true
                 }
+            })
+
+            if (position > -1) {
+                let result = this.squareRoot(parseFloat(tokens[position + 1].value));
+                console.log(result);
+                tokens[position + 1].value = result;
+                tokens.splice(position, 1);
             }
         } while (position > -1);
 
