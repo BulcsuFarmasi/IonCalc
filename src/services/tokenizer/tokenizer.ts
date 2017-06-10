@@ -46,6 +46,7 @@ export class TokenizerService {
     }
 
     getTokens (chars:string[]) {
+        this.tokens = [];
         chars.map((char) => {
             if (this.charService.isOperator(char)) {
                 this.addOperator(char);

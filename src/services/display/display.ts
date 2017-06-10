@@ -26,7 +26,6 @@ export class DisplayService{
     addDisplayContent(item) {
         if (this.charService.isOperator(item)) {
             if (this.filterOperator(item)){
-                console.log(item);
                 this.displayContent += item;
             }
         } else {

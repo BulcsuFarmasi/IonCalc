@@ -28,13 +28,12 @@ export class CalculatorService {
         }
 
         tokens = this.findSquareRoots(tokens);
-        console.log(tokens);
         tokens = this.findPowers(tokens);
         tokens = this.findMultiplies(tokens);
         tokens = this.findAdds(tokens);
 
-
-        return tokens[0].value;
+        let result = tokens[0].value;
+        return result;
     }
 
     divide (operand1:number, operand2:number) {
@@ -45,6 +44,7 @@ export class CalculatorService {
         var position = 0;
         do {
             position = tokens.findIndex((token) => {
+                console.log(token);
                 if (token.type == 'operator' && (token.value == '+' || token.value == '-')){
                     return true
                 }
@@ -117,12 +117,10 @@ export class CalculatorService {
     }
 
     findSquareRoots (tokens) {
-        console.log(tokens);
         var position = 0;
         do {
 
             position = tokens.findIndex((token) => {
-                console.log(token.type == 'operator' && token.value == '√', token);
                 if (token.type == 'operator' && token.value == '√'){
                     return true
                 }
@@ -130,7 +128,6 @@ export class CalculatorService {
 
             if (position > -1) {
                 let result = this.squareRoot(parseFloat(tokens[position + 1].value));
-                console.log(result);
                 tokens[position + 1].value = result;
                 tokens.splice(position, 1);
             }
