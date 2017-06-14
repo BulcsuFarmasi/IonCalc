@@ -9,6 +9,10 @@ export class CharService {
         this.operators = ['+', '-', '*', '/', '^', '√'];
     }
 
+    getOperators ():string[] {
+        return this.operators;
+    }
+
     isOperator(char:string) {
         return this.operators.indexOf(char) > -1;
     }

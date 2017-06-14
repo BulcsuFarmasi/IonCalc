@@ -14,14 +14,14 @@ import { Key } from '../../services/keyboard/key'
 
 export class KeyboardComponent implements OnInit{
     private keys:Key[];
-    constructor(private displayService:DisplayService, private keyboardService:KeyboardService){}
+    constructor(private _displayService:DisplayService, private _keyboardService:KeyboardService){}
 
     ngOnInit () {
-        this.keyboardService.getKeys()
+        this._keyboardService.getKeys()
             .subscribe(keys => {this.keys = keys});
     }
 
     keyTouched(key){
-        this.displayService.filterNewChar(key);
+        this._displayService.filterNewChar(key);
     }
 }

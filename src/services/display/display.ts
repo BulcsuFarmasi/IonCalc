@@ -9,22 +9,22 @@ import { Token } from '../tokenizer/token';
 export class DisplayService{
     private displayContent:string='';
 
-    constructor(private tokenizerService:TokenizerService, private charService:CharService,
-                private calculatorService:CalculatorService){}
+    constructor(private _tokenizerService:TokenizerService, private _charService:CharService,
+                private _calculatorService:CalculatorService){}
 
     addParenthesis(){
         let lastChar = this.displayContent.charAt(this.displayContent.length - 1);
         let addable = '';
-        if (this.charService.isOperator(lastChar) || lastChar === '(') {
+        if (this._charService.isOperator(lastChar) || lastChar === '(') {
             addable = '(';
-        } else if (this.charService.isNumber(lastChar) || lastChar === ')'){
+        } else if (this._charService.isNumber(lastChar) || lastChar === ')'){
             addable = ')';
         }
         this.displayContent += addable;
     }
 
     addDisplayContent(item) {
-        if (this.charService.isOperator(item)) {
+        if (this._charService.isOperator(item)) {
             if (this.filterOperator(item)){
                 this.displayContent += item;
             }
@@ -39,8 +39,8 @@ export class DisplayService{
 
     calculateResult () {
         let chars:string[] = this.displayContent.split('');
-        let tokens:Token[] = this.tokenizerService.getTokens(chars);
-        this.displayContent = this.calculatorService.calculateResult(tokens).toString();
+        let tokens:Token[] = this._tokenizerService.getTokens(chars);
+        this.displayContent = this._calculatorService.calculateResult(tokens).toString();
     }
 
     clearDisplayContent() {
@@ -77,7 +77,7 @@ export class DisplayService{
         var applicable:boolean = true;
 
         // root can't stand after number
-        if (!this.charService.isOperator(lastChar) && root && lastCharNumber >= 0) {
+        if (!this._charService.isOperator(lastChar) && root && lastCharNumber >= 0) {
             applicable = false;
         // operator except root can't be first
         } else if (notRoot && lastCharNumber < 0){
@@ -86,7 +86,7 @@ export class DisplayService{
         } else if (lastChar === '√' && notRoot) {
             applicable = false;
         // operator can't stand after operator both aren't roots, deleting the first
-        } else if (this.charService.isOperator(lastChar) && notRoot) {
+        } else if (this._charService.isOperator(lastChar) && notRoot) {
             this.deleteChar(lastCharNumber);
         }
         return applicable;
@@ -100,13 +100,13 @@ export class DisplayService{
 
     negateLastNumber() {
         var lastChar = this.displayContent.length - 1;
-        if (this.charService.isNumber(this.displayContent.charAt(lastChar))){
+        if (this._charService.isNumber(this.displayContent.charAt(lastChar))){
             var i = lastChar;
-            while (i > 0 && !this.charService.isOperator(this.displayContent.charAt(i)) &&
-            !this.charService.isOperator(this.displayContent.charAt(i - 1))) {
+            while (i > 0 && !this._charService.isOperator(this.displayContent.charAt(i)) &&
+            !this._charService.isOperator(this.displayContent.charAt(i - 1))) {
                 i--;
             }
-            if (this.displayContent.charAt(i - 1) === '-' && this.charService.isOperator(this.displayContent.charAt(i - 2))){
+            if (this.displayContent.charAt(i - 1) === '-' && this._charService.isOperator(this.displayContent.charAt(i - 2))){
                 this.deleteChar(i - 1);
             } else {
                 this.insertChar(i, '-');

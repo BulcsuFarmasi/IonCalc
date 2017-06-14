@@ -6,33 +6,31 @@ import { Token } from './token';
 @Injectable()
 export class TokenizerService {
     private tokens:Token[] = [];
-    constructor(private charService:CharService){}
+    constructor(private _charService:CharService){}
 
     addNumber (number:string) {
         let tokensLength = this.tokens.length;
         if (tokensLength > 0 && this.tokens[tokensLength - 1].type == 'number') {
             this.tokens[tokensLength - 1].value += number;
         } else {
-            let token = new Token();
-            token.type = 'number';
-            token.value = number;
-            tokensLength=this.tokens.push(token);
+            this.addToken('number', number);
             this.createNegative(tokensLength);
         }
     }
 
     addOperator (operator:string) {
+        this.addToken('operator', operator);
+    }
+
+    addToken (type:string, value:string) {
         let token = new Token();
-        token.type = 'operator';
-        token.value = operator;
+        token.type = type;
+        token.value = value;
         this.tokens.push(token);
     }
 
     addParenthesis (parenthesis:string) {
-        let token = new Token();
-        token.type = 'parenthesis';
-        token.value = parenthesis;
-        this.tokens.push(token);
+        this.addToken('parenthesis', parenthesis);
     }
 
     createNegative(tokensLength:number) {
@@ -48,11 +46,11 @@ export class TokenizerService {
     getTokens (chars:string[]) {
         this.tokens = [];
         chars.map((char) => {
-            if (this.charService.isOperator(char)) {
+            if (this._charService.isOperator(char)) {
                 this.addOperator(char);
-            } else if (this.charService.isNumber(char)) {
+            } else if (this._charService.isNumber(char)) {
                 this.addNumber(char);
-            } else if (this.charService.isParenthesis(char)) {
+            } else if (this._charService.isParenthesis(char)) {
                 this.addParenthesis(char);
             }
         })

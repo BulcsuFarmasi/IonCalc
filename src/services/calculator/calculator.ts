@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Token } from "../tokenizer/token";
+import { Token } from '../tokenizer/token';
 import { ParentthesisNotFound } from './parenthesis-not-found'
 
 @Injectable()
@@ -113,7 +113,7 @@ export class CalculatorService {
             }
         } while (position > -1);
 
-            return tokens;
+        return tokens;
     }
 
     findSquareRoots (tokens) {
