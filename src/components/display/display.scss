@@ -3,7 +3,7 @@ display {
   height:20%;
   display:flex;
   align-items:center;
-  border-bottom: 2px solid map-get($colors, 'dark');
+  border-bottom: 1px solid map-get($colors, 'dark');
   p {
     width: 100%;
     font-size: 60px;

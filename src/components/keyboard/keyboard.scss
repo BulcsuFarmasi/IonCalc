@@ -12,13 +12,24 @@ keyboard{
       top:1px solid map-get($colors,'dark');
       right:1px solid map-get($colors,'dark')
     }
+    &.equals {
+        background-color: map-get($colors, 'secondary');
+        color: map-get($colors, 'very-light');
+    }
+    &.delete {
+      background-color: map-get($colors, 'danger');
+      color: map-get($colors, 'very-light');
+    }
+    &.number {
+      color: map-get($colors, 'primary');
+    }
+    &.operator {
+      color: map-get($colors, 'primary');
+    }
     &:last-child{
       width:100%;
       border-right:none;
       display:block;
-    }
-    &:hover{
-        background-color:map-get($colors,'light');
     }
     &:nth-child(4n){
         border-right:none;
